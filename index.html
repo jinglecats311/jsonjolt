@@ -11,6 +11,7 @@
       margin: 3rem auto;
       padding: 0 1rem;
       font: 16px system-ui, sans-serif;
+      <!-- i can't really be bothered making a style.css right now, so i'm sticking with this snoozefest of a font known as "sans-serif". much love <3 -->
       background: #111;
       color: #eee;
     }
@@ -61,16 +62,16 @@
     const output = document.querySelector("#output");
     const error = document.querySelector("#error");
 
-    // waking up the rust code. take your time, i guess.
+    // waking up the rust code. hurry uppppppp
     await init();
 
     document.querySelector("#format").addEventListener("click", () => {
       try {
-        // making the json readable. huge day for spacing.
+        // making the json readable
         output.value = format_json(input.value);
         error.textContent = "";
       } catch (err) {
-        // not json. bold choice.
+        // not json. bold choice. why??
         output.value = "";
         error.textContent = `not valid json: ${err}`;
       }
