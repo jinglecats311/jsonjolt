@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>jsonjolt</title>
+
+  <style>
+    body {
+      max-width: 850px;
+      margin: 3rem auto;
+      padding: 0 1rem;
+      font: 16px system-ui, sans-serif;
+      background: #111;
+      color: #eee;
+    }
+
+    textarea {
+      box-sizing: border-box;
+      width: 100%;
+      min-height: 220px;
+      padding: 1rem;
+      font: 14px monospace;
+      background: #1c1c1c;
+      color: #eee;
+      border: 1px solid #444;
+      border-radius: 6px;
+    }
+
+    button {
+      margin: 1rem 0;
+      padding: .7rem 1rem;
+      cursor: pointer;
+      background: #eee;
+      color: #111;
+      border: 0;
+      border-radius: 5px;
+    }
+
+    #error {
+      color: #ff7777;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>jsonjolt</h1>
+  <p>paste your json here. let's see if it can behave.</p>
+
+  <textarea id="input" spellcheck="false" aria-label="JSON input">{"hello":"Rust","fast":true}</textarea>
+  <br>
+  <button id="format">make it readable</button>
+
+  <p id="error" role="status"></p>
+  <textarea id="output" spellcheck="false" aria-label="Formatted JSON" readonly></textarea>
+
+  <script type="module">
+    import init, { format_json } from "./pkg/jsonjolt.js";
+
+    const input = document.querySelector("#input");
+    const output = document.querySelector("#output");
+    const error = document.querySelector("#error");
+
+    // waking up the rust code. take your time, i guess.
+    await init();
+
+    document.querySelector("#format").addEventListener("click", () => {
+      try {
+        // making the json readable. huge day for spacing.
+        output.value = format_json(input.value);
+        error.textContent = "";
+      } catch (err) {
+        // not json. bold choice.
+        output.value = "";
+        error.textContent = `not valid json: ${err}`;
+      }
+    });
+  </script>
+</body>
+</html>
